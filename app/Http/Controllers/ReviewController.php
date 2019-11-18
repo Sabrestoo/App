@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\review;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
@@ -34,7 +35,21 @@ class ReviewController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'min:35'
+        ]);
+
+        $review = new Review();
+        $review->title = $request->title;
+        $review->description = $request->description;
+
+
+        if($review->save()){
+            return redirect()->route('reviews.show', $review->id);
+        } else {
+            return redirect()->route('reviews.create');
+        }
     }
 
     /**
@@ -45,7 +60,7 @@ class ReviewController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
